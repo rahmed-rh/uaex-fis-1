@@ -2,20 +2,21 @@ openshift.withCluster() {
  openshift.withProject('poc') {
   echo "Hello from project ${openshift.project()} in cluster ${openshift.cluster()}"
   APP_GIT_URL = "https://github.com/skoussou/multi-xpaas-micros-story/fis-rest-1"
-
+  def cm
   node('maven') {
 
 
    // Mark the code checkout 'stage'....
    stage('Configure') {
-	 
-	 def cmSelector = openshift.selector( "configmap", "app-config")
-     def cmExists = cmSelector.exists() 
-     def cm
-     
+
+     def cmSelector = openshift.selector("configmap", "app-config")
+     def cmExists = cmSelector.exists()
+
+
      if (cmExists) {
       cm = cmSelector.object()
-     } else {
+     } 
+     else {
       def cmappconfig = [
        [
         "kind": "ConfigMap",
@@ -31,15 +32,15 @@ openshift.withCluster() {
       cm = openshift.create(cmappconfig).object()
 
      }
-     echo "The CM is ${cm} objects"
-     echo "The CM is ${cm.data['app-git-url']} objects"
+     echo "The CM is ${cm}"
+     echo "The CM is ${cm.data['app-git-url']}"
 
     }
     // Mark the code checkout 'stage'....
    stage('Checkout') {
 
     // Get some code from a GitHub repository
-    git branch: "master", url: echo "${cm.data['app-git-url']}"
+    git branch: "master", url: cm.data['app-git-url']
 
    }
   }
