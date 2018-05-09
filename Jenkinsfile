@@ -37,14 +37,14 @@ openshift.withCluster() {
    // Mark the code checkout 'stage'....
    stage('Checkout') {
 
-    // Get some code from a GitHub repository
-    git branch: "master", url: cm.data['app-git-url']
-
-    // Mark the code build 'stage'....
-    stage('Maven Build') {
-     // Run the maven build
-     sh "mvn fabric8:deploy"
+     // Get some code from a GitHub repository
+     git branch: "master", url: cm.data['app-git-url']
     }
+    // Mark the code build 'stage'....
+   stage('Maven Build') {
+    // Run the maven build
+    sh "mvn clean compile"
+    sh "mvn fabric8:deploy"
    }
   }
  }
