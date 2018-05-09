@@ -39,7 +39,7 @@ openshift.withCluster() {
    stage('Checkout') {
 
     // Get some code from a GitHub repository
-    git branch: "master", url: cm.data['app-git-url']
+    git branch: "master", url: "${cm.data['app-git-url']}"
 
    }
   }
