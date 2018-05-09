@@ -4,12 +4,10 @@ openshift.withCluster() {
   APP_GIT_URL = "https://github.com/rahmed-rh/uaex-fis-1"
   def cm
 
-
-
   // Mark the code checkout 'stage'....
   stage('Configure') {
 
-   def cmSelector = openshift.selector("configmap", "app-config")
+   def cmSelector = openshift.selector("configmap", "pipeline-app-config")
    def cmExists = cmSelector.exists()
 
 
@@ -42,6 +40,11 @@ openshift.withCluster() {
     // Get some code from a GitHub repository
     git branch: "master", url: cm.data['app-git-url']
 
+    // Mark the code build 'stage'....
+    stage('Maven Build') {
+     // Run the maven build
+     sh "mvn fabric8:deploy"
+    }
    }
   }
  }
