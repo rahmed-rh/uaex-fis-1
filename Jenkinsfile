@@ -19,7 +19,7 @@ openshift.withCluster() {
       "kind": "ConfigMap",
       "apiVersion": "v1",
       "metadata": [
-       "name": "app-config"
+       "name": "pipeline-app-config"
       ],
       "data": [
        "app-git-url": "${APP_GIT_URL}"
