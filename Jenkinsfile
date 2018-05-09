@@ -28,7 +28,8 @@ openshift.withCluster() {
                 	cm = openshift.create(cmappconfig).object()
 	                 
 	            }
-                 echo "The CM is ${cm.data["app-git-url"]} objects"
+	             echo "The CM is ${cm} objects"
+                 echo "The CM is ${cm.data['app-git-url']} objects"
                 
 			   // Mark the code checkout 'stage'....
 			   stage 'Checkout'
