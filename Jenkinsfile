@@ -8,10 +8,11 @@ openshift.withCluster() {
 
    // Mark the code checkout 'stage'....
    stage('Configure') {
-
-     def cmExists = cmSelector.exists()
-
+	 
+	 def cmSelector = openshift.selector( "configmap", "app-config")
+     def cmExists = cmSelector.exists() 
      def cm
+     
      if (cmExists) {
       cm = cmSelector.object()
      } else {
