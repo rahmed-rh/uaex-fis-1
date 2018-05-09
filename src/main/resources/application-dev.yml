@@ -14,17 +14,7 @@ server:
 endpoints:
   enabled: false
   health:
-    enabled: true
-
-spring:
-  # Spring JDBC configuration
-  datasource:
-    # Let Spring Boot auto-configure an embedded HSQL database
-    # https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-embedded-database-support
-    # https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html#howto-initialize-a-database-using-spring-jdbc
-    url:
-    platform: HSQL
- 
+    enabled: true 
 
 # The application configuration properties
 quickstart:
