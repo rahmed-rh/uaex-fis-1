@@ -44,20 +44,20 @@ openshift.withCluster() {
    //def fisISSelector = openshift.selector("imagestream", "fis-java-openshift")
    //def fisISExists = cmSelector.exists()
    //if (!fisISExists) {
-   openshift.replace(cm.data['fis-image-stream'], "-f")
+   openshift.replace(cm.data['fis-image-stream'], "--force")
     //}
 
    //create AMQ builder imagestream & template
    //def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
    //def amqTemplateExists = amqTemplateSelector.exists()
    //if (!amqTemplateExists) {
-   openshift.replace(cm.data['amq-template'], "-f")
+   openshift.replace(cm.data['amq-template'], "--force")
     //}
 
    //def amqISSelector = openshift.selector("imagestream", "amq63-image-stream")
    //def amqISExists = amqISSelector.exists()
    //if (!amqISExists) {
-   openshift.replace(cm.data['amq-image-stream'], "-f")
+   openshift.replace(cm.data['amq-image-stream'], "--force")
     //}
 
    //create amq servie account
