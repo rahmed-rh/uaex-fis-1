@@ -8,6 +8,7 @@ openshift.withCluster() {
             def AMQ_IMAGE_STREAM = "https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-image-stream.json"
             def AMQ_TEMPLATE = "https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-persistent.json"
             def cm
+            def amqTemplate
 
             // Mark the code checkout 'stage'....
             stage('Configure') {
@@ -53,7 +54,7 @@ openshift.withCluster() {
                 //def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
                 //def amqTemplateExists = amqTemplateSelector.exists()
                 //if (!amqTemplateExists) {
-                openshift.replace("--force", "-n openshift", "-f ", cm.data['amq-template'])
+                amqTemplate = openshift.replace("--force", "-n openshift", "-f ", cm.data['amq-template'])
                 //}
 
                 //def amqISSelector = openshift.selector("imagestream", "amq63-image-stream")
@@ -75,12 +76,7 @@ openshift.withCluster() {
             }
             // Create the AMQ....
             stage('Create the AMQ') {
-                def amqTemplate
-                def amqTemplateSelector = openshift.selector("template", "amq63-persistent","-n openshift")
-                def amqTemplateExists = amqTemplateSelector.exists()
-                if (amqTemplateExists) {
-                    amqTemplate = amqTemplateSelector.object()
-                }
+                
                 def models = openshift.process(amqTemplate, "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
                 echo "Discarding objects of type ${skipObjects}"
                 for (o in models) {
