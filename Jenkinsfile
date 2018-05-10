@@ -38,36 +38,36 @@ openshift.withCluster() {
             echo "The CM is ${cm}"
             echo "The app-git-url is ${cm.data['app-git-url']}"
 
-
-            // Should i really check if template or is exists or no, or just go with the latest as the is maybe update !!!
-            //create FIS builder imagestream
-            //def fisISSelector = openshift.selector("imagestream", "fis-java-openshift")
-            //def fisISExists = cmSelector.exists()
-            //if (!fisISExists) {
-            openshift.replace("--force", "-n openshift", "-f ", cm.data['fis-image-stream'])
-            //}
-
-            //create AMQ builder imagestream & template
-            //def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
-            //def amqTemplateExists = amqTemplateSelector.exists()
-            //if (!amqTemplateExists) {
-            openshift.replace("--force", "-n openshift", "-f ", cm.data['amq-template'])
-            //}
-
-            //def amqISSelector = openshift.selector("imagestream", "amq63-image-stream")
-            //def amqISExists = amqISSelector.exists()
-            //if (!amqISExists) {
-            openshift.replace("--force", "-n openshift", "-f ", cm.data['amq-image-stream'])
-            //}
-
-            //create amq servie account
-            def amqSASelector = openshift.selector("serviceaccount", "amq-service-account")
-            def amqSAExists = amqSASelector.exists()
-            if (!amqSAExists) {
-                openshift.create('serviceaccount', 'amq-service-account')
-            }
             openshift.withCredentials('cluster-admin-credential-id') {
                 openshift.doAs('admin') {
+                    // Should i really check if template or is exists or no, or just go with the latest as the is maybe update !!!
+                    //create FIS builder imagestream
+                    //def fisISSelector = openshift.selector("imagestream", "fis-java-openshift")
+                    //def fisISExists = cmSelector.exists()
+                    //if (!fisISExists) {
+                    openshift.replace("--force", "-n openshift", "-f ", cm.data['fis-image-stream'])
+                    //}
+
+                    //create AMQ builder imagestream & template
+                    //def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
+                    //def amqTemplateExists = amqTemplateSelector.exists()
+                    //if (!amqTemplateExists) {
+                    openshift.replace("--force", "-n openshift", "-f ", cm.data['amq-template'])
+                    //}
+
+                    //def amqISSelector = openshift.selector("imagestream", "amq63-image-stream")
+                    //def amqISExists = amqISSelector.exists()
+                    //if (!amqISExists) {
+                    openshift.replace("--force", "-n openshift", "-f ", cm.data['amq-image-stream'])
+                    //}
+
+                    //create amq servie account
+                    def amqSASelector = openshift.selector("serviceaccount", "amq-service-account")
+                    def amqSAExists = amqSASelector.exists()
+                    if (!amqSAExists) {
+                        openshift.create('serviceaccount', 'amq-service-account')
+                    }
+
                     openshift.policy("add-role-to-user", "view", "system:serviceaccount:$PROJECT_NAME:amq-service-account", "-n", PROJECT_NAME)
                 }
             }
