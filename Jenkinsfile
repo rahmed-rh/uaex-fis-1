@@ -73,6 +73,33 @@ openshift.withCluster() {
 
 
             }
+            // Create the AMQ....
+            stage('Create the AMQ') {
+                def amqTemplate
+                def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
+                def amqTemplateExists = amqTemplateSelector.exists()
+                if (amqTemplateExists) {
+                    
+                }
+                def models = openshift.process(readFile(amqTemplate), "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
+                echo "Discarding objects of type ${skipObjects}"
+                for (o in models) {
+                    // we will discard skipObjects
+                    def skip = false
+                    for (skipObject in skipObjects) {
+                        if (o.kind == skipObject) {
+                            skip = true
+                            break
+                        }
+                    }
+                    if (!skip) {
+                        echo "Applying changes on ${o.kind}"
+                        filterObject(o)
+                        def created = openshift.apply(o)
+                        // do we want to show "created"?
+                    }
+                }
+            }
             node('maven') {
                 // Mark the code checkout 'stage'....
                 stage('Checkout') {
@@ -80,41 +107,15 @@ openshift.withCluster() {
                     // Get some code from a GitHub repository
                     git branch: "master", url: cm.data['app-git-url']
                 }
+
+                stage('Deploy to DEV') {
+                    // Run the fabric8
+                    sh "mvn fabric8:deploy"
+                }
                 // Mark the code build 'stage'....
                 stage('Maven Build') {
                     // Run the maven build
                     sh "mvn clean compile"
-                }
-                // Create the AMQ....
-                stage('Create the AMQ') {
-                    def amqTemplate
-                    def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
-                    def amqTemplateExists = amqTemplateSelector.exists()
-                    if (amqTemplateExists) {
-                        amqTemplate = amqTemplateSelector.object()
-                    }
-                    def models = openshift.process(amqTemplate, "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
-                    echo "Discarding objects of type ${skipObjects}"
-                    for (o in models) {
-                        // we will discard skipObjects
-                        def skip = false
-                        for (skipObject in skipObjects) {
-                            if (o.kind == skipObject) {
-                                skip = true
-                                break
-                            }
-                        }
-                        if (!skip) {
-                            echo "Applying changes on ${o.kind}"
-                            filterObject(o)
-                            def created = openshift.apply(o)
-                            // do we want to show "created"?
-                        }
-                    }
-                }
-                stage('Deploy to DEV') {
-                    // Run the fabric8
-                    sh "mvn fabric8:deploy"
                 }
             }
         }
