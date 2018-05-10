@@ -67,7 +67,7 @@ openshift.withCluster() {
     openshift.create('serviceaccount', 'amq-service-account')
    }
 
-   openshift.policy("add-role-to-user", "view", "system:serviceaccount:${$PROJECT_NAME}:amq-service-account", "-n", PROJECT_NAME)
+   openshift.policy("add-role-to-user", "view", "system:serviceaccount:$PROJECT_NAME:amq-service-account", "-n", PROJECT_NAME)
   }
   node('maven') {
    // Mark the code checkout 'stage'....
