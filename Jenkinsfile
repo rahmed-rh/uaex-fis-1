@@ -35,7 +35,8 @@ openshift.withCluster() {
                                 "app-git-url": "${APP_GIT_URL}",
                                 "fis-image-stream": "${FIS_IMAGE_STREAM}",
                                 "amq-image-stream": "${AMQ_IMAGE_STREAM}",
-                                "amq-template": "${AMQ_TEMPLATE}"
+                                "amq-template": "${AMQ_TEMPLATE}",
+                                "amq-app-name": "${AMQ_APP_NAME}"
                             ]
                         ]
                     ]
@@ -82,7 +83,7 @@ openshift.withCluster() {
             openshift.replace("--force", "-f ", cm.data['amq-image-stream'])
             //}
 
-            amqModels = openshift.process("amq63-persistent", "-p APPLICATION_NAME=$AMQ_APP_NAME -p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
+            amqModels = openshift.process("amq63-persistent", "-p APPLICATION_NAME=${cm.data['amq-app-name']} -p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
 
         }
 
