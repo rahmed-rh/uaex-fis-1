@@ -63,7 +63,7 @@ openshift.withCluster() {
    //create amq servie account
    def amqSASelector = openshift.selector("serviceaccount", "amq-service-account")
    def amqSAExists = amqSASelector.exists()
-   if (!amqISExists) {
+   if (!amqSAExists) {
     openshift.create('serviceaccount', 'amq-service-account')
    }
 
