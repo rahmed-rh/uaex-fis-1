@@ -77,7 +77,7 @@ openshift.withCluster() {
             // Create the AMQ....
             stage('Create the AMQ') {
                 
-                def models = openshift.process(amqTemplate, "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
+                def models = openshift.process(readFile(amqTemplate), "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
                 echo "Discarding objects of type ${skipObjects}"
                 for (o in models) {
                     // we will discard skipObjects
