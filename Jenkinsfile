@@ -39,7 +39,7 @@ openshift.withCluster() {
    echo "The app-git-url is ${cm.data['app-git-url']}"
 
 
-   // Should i really check if template or IS exists or not or just go with the latest as the IS maybe update !!!
+   // Should i really check if template or is exists or no, or just go with the latest as the is maybe update !!!
    //create FIS builder imagestream
    //def fisISSelector = openshift.selector("imagestream", "fis-java-openshift")
    //def fisISExists = cmSelector.exists()
@@ -66,8 +66,8 @@ openshift.withCluster() {
    if (!amqISExists) {
     openshift.create('serviceaccount', 'amq-service-account')
    }
-   
-   sh "oc policy add-role-to-user view system:serviceaccount:$PROJECT_NAME:amq-service-account"
+
+   openshift.policy("add-role-to-user", "view", "system:serviceaccount:${$PROJECT_NAME}:amq-service-account", "-n", PROJECT_NAME)
   }
   node('maven') {
    // Mark the code checkout 'stage'....
@@ -80,6 +80,33 @@ openshift.withCluster() {
    stage('Maven Build') {
     // Run the maven build
     sh "mvn clean compile"
+   }
+   // Create the AMQ....
+   stage('Create the AMQ') {
+    def amqTemplate
+     def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
+   def amqTemplateExists = amqTemplateSelector.exists()
+   if (amqTemplateExists) {
+   amqTemplate = amqTemplateSelector.object()
+    }
+     def models = openshift.process(amqTemplate, "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd","-p MQ_QUEUES=TESTQUEUE" )
+      echo "Discarding objects of type ${skipObjects}"
+      for ( o in models ) {
+         // we will discard skipObjects
+         def skip = false
+         for ( skipObject in skipObjects ) {
+           if (o.kind == skipObject) {
+	      skip = true
+	      break
+           }
+         }
+         if (!skip) {
+            echo "Applying changes on ${o.kind}"
+            filterObject(o)
+            def created = openshift.apply(o) 
+           // do we want to show "created"?
+         }
+      }
    }
    stage('Deploy to DEV') {
     // Run the fabric8
