@@ -4,7 +4,7 @@ openshift.withCluster() {
         def amqTemplate
         def amqModels
         def cm
-        
+
 
         openshift.withProject(PROJECT_NAME) {
             echo "Hello from project ${openshift.project()} in cluster ${openshift.cluster()}"
@@ -80,7 +80,7 @@ openshift.withCluster() {
             openshift.replace("--force", "-f ", cm.data['amq-image-stream'])
             //}
 
-amqModels = openshift.process("amq63-persistent", "-n openshift", "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
+            amqModels = openshift.process("amq63-persistent", "-n openshift", "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
 
         }
 
@@ -88,24 +88,7 @@ amqModels = openshift.process("amq63-persistent", "-n openshift", "-p AMQ_STORAG
             // Create the AMQ....
             stage('Create the AMQ') {
 
-                
-                echo "Discarding objects of type ${skipObjects}"
-                for (o in amqModels) {
-                    // we will discard skipObjects
-                    def skip = false
-                    for (skipObject in skipObjects) {
-                        if (o.kind == skipObject) {
-                            skip = true
-                            break
-                        }
-                    }
-                    if (!skip) {
-                        echo "Applying changes on ${o.kind}"
-                        filterObject(o)
-                        def created = openshift.apply(o)
-                        // do we want to show "created"?
-                    }
-                }
+				objects = openshift.create(amqModels)
             }
             node('maven') {
                 // Mark the code checkout 'stage'....
