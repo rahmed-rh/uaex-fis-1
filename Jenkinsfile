@@ -66,8 +66,9 @@ openshift.withCluster() {
    if (!amqSAExists) {
     openshift.create('serviceaccount', 'amq-service-account')
    }
-
+	with openshift.withCredentials( 'cluster-admin-credential-id' ) {
    openshift.policy("add-role-to-user", "view", "system:serviceaccount:$PROJECT_NAME:amq-service-account", "-n", PROJECT_NAME)
+   }
   }
   node('maven') {
    // Mark the code checkout 'stage'....
