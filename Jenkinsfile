@@ -79,7 +79,7 @@ openshift.withCluster() {
                 def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
                 def amqTemplateExists = amqTemplateSelector.exists()
                 if (amqTemplateExists) {
-                    
+                    amqTemplate = amqTemplateSelector.object()
                 }
                 def models = openshift.process(readFile(amqTemplate), "-p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
                 echo "Discarding objects of type ${skipObjects}"
