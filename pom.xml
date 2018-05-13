@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -20,6 +21,7 @@
 		<!-- configure the versions you want to use here -->
 		<fabric8.version>2.2.170.redhat-000010</fabric8.version>
 		<spring-boot.version>1.4.1.RELEASE</spring-boot.version>
+		<infinispan.version>7.2.5.Final</infinispan.version>
 
 		<!-- Maven plugin versions -->
 		<fabric8.maven.plugin.version>3.1.80.redhat-000010</fabric8.maven.plugin.version>
@@ -29,7 +31,8 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- import Fabric8 platform BOM first : Note we are not using spring boot starter parent-->
+			<!-- import Fabric8 platform BOM first : Note we are not using spring 
+				boot starter parent -->
 			<dependency>
 				<groupId>io.fabric8</groupId>
 				<artifactId>fabric8-project-bom-camel-spring-boot</artifactId>
@@ -57,7 +60,7 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-servlet-starter</artifactId>
 		</dependency>
-		<!-- Needed as the default embedded in spring-boot-starter-web is tomcat  -->
+		<!-- Needed as the default embedded in spring-boot-starter-web is tomcat -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-undertow</artifactId>
@@ -73,6 +76,35 @@
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-script</artifactId>
+		</dependency>
+
+		<!-- infinispan & JDG -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-infinispan</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-core</artifactId>
+			<version>${infinispan.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-query-dsl</artifactId>
+			<version>${infinispan.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			 <artifactId>infinispan-remote</artifactId>
+			<version>${infinispan.version}</version>
+		</dependency>
+
+		<!-- For JDG auto-configuration -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- testing -->

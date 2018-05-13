@@ -15,14 +15,19 @@
  */
 package com.rahmed.redhat.demo.rest;
 
+import org.infinispan.protostream.annotations.ProtoField;
+import org.infinispan.protostream.annotations.ProtoMessage;
+
+@ProtoMessage(name = "Payee")
 public class Payee {
 
 	private int id;
 	private String name;
 	private String bankName;
 	private String accountNumber;
-	private boolean processed;
-
+	
+	// @ProtoDoc("@IndexedField(index = true, store = false)")
+	@ProtoField(number = 1)
 	public int getId() {
 		return id;
 	}
@@ -31,6 +36,8 @@ public class Payee {
 		this.id = id;
 	}
 
+	// @ProtoDoc("@IndexedField(index = true, store = false)")
+	@ProtoField(number = 2)
 	public String getName() {
 		return name;
 	}
@@ -39,6 +46,8 @@ public class Payee {
 		this.name = payeeName;
 	}
 
+	// @ProtoDoc("@IndexedField(index = true, store = false)")
+	@ProtoField(number = 3)
 	public String getBankName() {
 		return bankName;
 	}
@@ -47,20 +56,14 @@ public class Payee {
 		this.bankName = bankName;
 	}
 
+	// @ProtoDoc("@IndexedField(index = true, store = false)")
+	@ProtoField(number = 4)
 	public String getAccountNumber() {
 		return accountNumber;
 	}
 
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
-	}
-
-	public boolean isProcessed() {
-		return processed;
-	}
-
-	public void setProcessed(boolean processed) {
-		this.processed = processed;
 	}
 
 }

@@ -16,6 +16,13 @@ endpoints:
   health:
     enabled: true
 
+infinispan:
+  host: ${JDG_SERVICE_NAME}
+  port: ${JDG_SERVICE_PORT}
+  cache-name: ${JDG_CACHE_NAME}
+  username: ${JDGL_SERVICE_USERNAME}
+  password: ${JDG_SERVICE_PASSWORD}
+
 # The application configuration properties
 quickstart:
   generateOrderPeriod: 10s
