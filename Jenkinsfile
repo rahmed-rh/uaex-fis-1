@@ -67,23 +67,23 @@ openshift.withCluster() {
             //def fisISSelector = openshift.selector("imagestream", "fis-java-openshift")
             //def fisISExists = cmSelector.exists()
             //if (!fisISExists) {
-            openshift.replace("--force", "-f ", cm.data['fis-image-stream'])
+            //openshift.replace("--force", "-f ", cm.data['fis-image-stream'])
             //}
 
             //create AMQ builder imagestream & template
             //def amqTemplateSelector = openshift.selector("template", "amq63-persistent")
             //def amqTemplateExists = amqTemplateSelector.exists()
             //if (!amqTemplateExists) {
-            amqTemplate = openshift.replace("--force", "-f ", cm.data['amq-template'])
+            //amqTemplate = openshift.replace("--force", "-f ", cm.data['amq-template'])
             //}
 
             //def amqISSelector = openshift.selector("imagestream", "amq63-image-stream")
             //def amqISExists = amqISSelector.exists()
             //if (!amqISExists) {
-            openshift.replace("--force", "-f ", cm.data['amq-image-stream'])
+            //openshift.replace("--force", "-f ", cm.data['amq-image-stream'])
             //}
 
-            amqModels = openshift.process("amq63-persistent", "-p APPLICATION_NAME=${cm.data['amq-app-name']} -p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
+            //amqModels = openshift.process("amq63-persistent", "-p APPLICATION_NAME=${cm.data['amq-app-name']} -p AMQ_STORAGE_USAGE_LIMIT=5gb", "-p MQ_USERNAME=admin", "-p MQ_PASSWORD=passw0rd", "-p MQ_QUEUES=TESTQUEUE")
 
         }
 
@@ -91,7 +91,7 @@ openshift.withCluster() {
             // Create the AMQ....
             stage('Create the AMQ') {
 
-				objects = openshift.create(amqModels)
+				//objects = openshift.create(amqModels)
             }
             node('maven') {
                 // Mark the code checkout 'stage'....
