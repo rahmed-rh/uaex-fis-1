@@ -19,14 +19,14 @@
 		<!-- <run.profiles>dev</run.profiles> -->
 
 		<!-- configure the versions you want to use here -->
-		<fabric8.version>2.2.170.redhat-000010</fabric8.version>
-		<spring-boot.version>1.4.1.RELEASE</spring-boot.version>
-		<infinispan.version>7.2.5.Final</infinispan.version>
+		<fabric8.version>2.2.170.redhat-000023</fabric8.version>
+		<spring-boot.version>1.3.3.RELEASE</spring-boot.version>
+		<infinispan.version>8.4.2.Final-redhat-1</infinispan.version>
 
-		<!-- Maven plugin versions -->
-		<fabric8.maven.plugin.version>3.1.80.redhat-000010</fabric8.maven.plugin.version>
-		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+		<!-- maven plugin versions -->
+		<fabric8.maven.plugin.version>3.1.80.redhat-000023</fabric8.maven.plugin.version>
+		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -96,7 +96,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.infinispan</groupId>
-			 <artifactId>infinispan-remote</artifactId>
+			<artifactId>infinispan-remote</artifactId>
 			<version>${infinispan.version}</version>
 		</dependency>
 
@@ -140,7 +140,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
+		<!-- <repository>
 			<id>jboss-earlyaccess-repository</id>
 			<url>http://maven.repository.redhat.com/earlyaccess/all/</url>
 			<releases>
@@ -149,7 +149,7 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
+		</repository> -->
 	</repositories>
 
 	<pluginRepositories>
@@ -163,16 +163,16 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-		<pluginRepository>
+		<!-- <pluginRepository>
 			<id>jboss-earlyaccess-repository-plugin</id>
-			<url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+			<url>http://maven.repository.redhat.com/earlyaccess/all</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</pluginRepository>
+		</pluginRepository> -->
 	</pluginRepositories>
 	<build>
 		<defaultGoal>spring-boot:run</defaultGoal>
