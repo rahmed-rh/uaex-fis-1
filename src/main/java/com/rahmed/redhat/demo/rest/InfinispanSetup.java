@@ -8,6 +8,7 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
 import org.infinispan.commons.api.BasicCacheContainer;
+import org.infinispan.protostream.FileDescriptorSource;
 import org.infinispan.protostream.SerializationContext;
 import org.infinispan.protostream.annotations.ProtoSchemaBuilder;
 import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
@@ -44,15 +45,14 @@ public class InfinispanSetup {
 	/**
 	 * The name of the Infinispan cache.
 	 */
-	private String cacheName = "PAYEES";
+	private String cacheName ;
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	public BasicCacheContainer remoteCacheContainer() {
 
 		String hostPort = host + ":" + port;
-		logger.info("Connecting to the Infinispan service at {}", hostPort);
+		LOG.info("Connecting to the Infinispan service at {}", hostPort);
 
 		/*
 		 * return new RemoteCacheManager( new ConfigurationBuilder()
@@ -66,13 +66,18 @@ public class InfinispanSetup {
 											.marshaller(new ProtoStreamMarshaller())
 											.maxRetries(10)
 											.security()
-											.authentication()
-												.serverName("jdg-server").saslMechanism("DIGEST-MD5")
-												.callbackHandler(new LoginHandler(username, password.toCharArray(), "ApplicationRealm"))
+									        .authentication()
+									            .enable()
+									            .serverName("jdg-server")
+									            .saslMechanism("DIGEST-MD5")
+									            .callbackHandler(new LoginHandler(username, password.toCharArray(), "ApplicationRealm"))
 												.build(), 
 											true);
 
-		// .marshaller(new ProtoStreamMarshaller())
+		/*.security()
+		.authentication()
+			.serverName("jdg-server").saslMechanism("DIGEST-MD5")
+			.callbackHandler(new LoginHandler(username, password.toCharArray(), "ApplicationRealm"))*/
 		registerSchemasAndMarshallers(manager);
 		return manager;
 	}
@@ -84,11 +89,33 @@ public class InfinispanSetup {
 	
 	private void registerSchemasAndMarshallers(RemoteCacheManager cacheManager) {
         try {
-            // Register entity marshaller on the client side ProtoStreamMarshaller instance associated with the remote cache manager.
-        	SerializationContext serCtx =
-        		    ProtoStreamMarshaller.getSerializationContext(cacheManager);
 
-        	ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
+
+
+
+
+
+   String file = " package uaex;\n" +
+         "message Payee {\n" +
+         "    required int32 id = 1;\n" +
+         "    required string name = 2;\n" +
+         "    required string bankName = 3;\n" +
+         "    required string accountNumber = 4;\n" +
+         "}\n";
+   
+// Register entity marshaller on the client side ProtoStreamMarshaller instance associated with the remote cache manager.
+	SerializationContext ctx =
+		    ProtoStreamMarshaller.getSerializationContext(cacheManager);
+
+   ctx.registerProtoFiles(FileDescriptorSource.fromString("Payee.proto", file));
+   ctx.registerMarshaller(new PayeeMarshaller());
+  
+
+
+
+            
+
+        	/*ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
         	String payeeSchemaFile = protoSchemaBuilder
         	    .fileName("Payee.proto")
         	    .packageName("uaex")
@@ -111,7 +138,7 @@ public class InfinispanSetup {
             if (errors != null) {
                throw new IllegalStateException("Some Protobuf schema files contain errors:\n" + errors);
             }        	
-      
+      */
         } catch (IOException ioe) {
         	LOG.info("Could not register marshallers! Remote querying is not going to work properly.");
         	LOG.info(ioe.getMessage());

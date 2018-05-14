@@ -15,29 +15,39 @@
  */
 package com.rahmed.redhat.demo.rest;
 
+import java.io.Serializable;
+
 import org.infinispan.protostream.annotations.ProtoField;
 import org.infinispan.protostream.annotations.ProtoMessage;
 
-@ProtoMessage(name = "Payee")
-public class Payee {
+import io.swagger.annotations.ApiModelProperty;
 
-	private int id;
+import org.infinispan.protostream.UnknownFieldSet;
+
+
+//@ProtoMessage(name = "Payee")
+public class Payee implements Serializable {
+
+	private Integer id;
 	private String name;
 	private String bankName;
 	private String accountNumber;
-	
+
+	@ApiModelProperty(required = false, hidden = true)
+	private UnknownFieldSet unknownFieldSet;
+
 	// @ProtoDoc("@IndexedField(index = true, store = false)")
-	@ProtoField(number = 1)
-	public int getId() {
+	//@ProtoField(number = 1)
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	// @ProtoDoc("@IndexedField(index = true, store = false)")
-	@ProtoField(number = 2)
+	//@ProtoField(number = 2)
 	public String getName() {
 		return name;
 	}
@@ -47,7 +57,7 @@ public class Payee {
 	}
 
 	// @ProtoDoc("@IndexedField(index = true, store = false)")
-	@ProtoField(number = 3)
+	//@ProtoField(number = 3)
 	public String getBankName() {
 		return bankName;
 	}
@@ -57,7 +67,7 @@ public class Payee {
 	}
 
 	// @ProtoDoc("@IndexedField(index = true, store = false)")
-	@ProtoField(number = 4)
+	//@ProtoField(number = 4)
 	public String getAccountNumber() {
 		return accountNumber;
 	}
@@ -66,4 +76,18 @@ public class Payee {
 		this.accountNumber = accountNumber;
 	}
 
+	public UnknownFieldSet getUnknownFieldSet() {
+		return unknownFieldSet;
+	}
+
+	public void setUnknownFieldSet(UnknownFieldSet unknownFieldSet) {
+		this.unknownFieldSet = unknownFieldSet;
+	}
+
+	@Override
+	public String toString() {
+
+		return "[id=" + id + "," + ", name=" + name + ", bankName=" + bankName + ", accountNumber=" + accountNumber
+				+ "]";
+	}
 }

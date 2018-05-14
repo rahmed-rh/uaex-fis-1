@@ -16,11 +16,11 @@ spec:
               memory: 512Mi
           env:
           - name: JDG_SERVICE_NAME
-            value: uaex-jdg-data
+            value: uaex-jdg-data-hotrod
           - name: JDG_SERVICE_PORT
-            value: 11222
+            value: 11333
           - name: JDG_CACHE_NAME
-            value: PAYEES
+            value: payees
           - name: JDGL_SERVICE_USERNAME
             value: admin
           - name: JDG_SERVICE_PASSWORD
