@@ -54,10 +54,6 @@ public class InfinispanSetup {
 		String hostPort = host + ":" + port;
 		LOG.info("Connecting to the Infinispan service at {}", hostPort);
 
-		/*
-		 * return new RemoteCacheManager( new ConfigurationBuilder()
-		 * .addServers(hostPort) .forceReturnValues(true) .build(), true );
-		 */
 
 		RemoteCacheManager manager = new RemoteCacheManager(
 											new ConfigurationBuilder()
@@ -73,11 +69,6 @@ public class InfinispanSetup {
 									            .callbackHandler(new LoginHandler(username, password.toCharArray(), "ApplicationRealm"))
 												.build(), 
 											true);
-
-		/*.security()
-		.authentication()
-			.serverName("jdg-server").saslMechanism("DIGEST-MD5")
-			.callbackHandler(new LoginHandler(username, password.toCharArray(), "ApplicationRealm"))*/
 		registerSchemasAndMarshallers(manager);
 		return manager;
 	}
@@ -91,28 +82,19 @@ public class InfinispanSetup {
         try {
 
 
+			String file = " package uaex;\n" 
+					+ "message Payee {\n" 
+					+ "    required int32 id = 1;\n"
+					+ "    required string name = 2;\n" 
+					+ "    required string bankName = 3;\n"
+					+ "    required string accountNumber = 4;\n" + "}\n";
 
+			// Register entity marshaller on the client side ProtoStreamMarshaller instance
+			// associated with the remote cache manager.
+			SerializationContext ctx = ProtoStreamMarshaller.getSerializationContext(cacheManager);
 
-
-
-   String file = " package uaex;\n" +
-         "message Payee {\n" +
-         "    required int32 id = 1;\n" +
-         "    required string name = 2;\n" +
-         "    required string bankName = 3;\n" +
-         "    required string accountNumber = 4;\n" +
-         "}\n";
-   
-// Register entity marshaller on the client side ProtoStreamMarshaller instance associated with the remote cache manager.
-	SerializationContext ctx =
-		    ProtoStreamMarshaller.getSerializationContext(cacheManager);
-
-   ctx.registerProtoFiles(FileDescriptorSource.fromString("Payee.proto", file));
-   ctx.registerMarshaller(new PayeeMarshaller());
-  
-
-
-
+			ctx.registerProtoFiles(FileDescriptorSource.fromString("Payee.proto", file));
+			ctx.registerMarshaller(new PayeeMarshaller());
             
 
         	/*ProtoSchemaBuilder protoSchemaBuilder = new ProtoSchemaBuilder();
