@@ -10,7 +10,7 @@
 	<version>1.0</version>
 
 	<name>Fuse Integration Services - UAEX Sample 1</name>
-	<description>Vodafone Sample for Fuse Integration Services</description>
+	<description>UAEX Sample for Fuse Integration Services</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
