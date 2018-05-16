@@ -1,9 +1,12 @@
+metadata:
+  labels:
+    app: uaex-fis-1
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: vodafone-fis
+        app: uaex-fis-1
     spec:
       containers:
         - 

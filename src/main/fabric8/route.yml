@@ -1,4 +1,6 @@
-spec:
+metadata:
+  labels:
+    app: uaex-fis-1
   to:
     kind: Service
     name: fis-rest-1

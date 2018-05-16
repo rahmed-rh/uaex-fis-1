@@ -85,17 +85,10 @@
 		</dependency>
 
 
-		<!-- <dependency>
-			<groupId>org.infinispan</groupId>
-			<artifactId>infinispan-core</artifactId>
-			<version>${infinispan.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.infinispan</groupId>
-			<artifactId>infinispan-query-dsl</artifactId>
-			<version>${infinispan.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.infinispan</groupId> <artifactId>infinispan-core</artifactId> 
+			<version>${infinispan.version}</version> </dependency> <dependency> <groupId>org.infinispan</groupId> 
+			<artifactId>infinispan-query-dsl</artifactId> <version>${infinispan.version}</version> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.infinispan</groupId>
 			<artifactId>infinispan-remote</artifactId>
@@ -203,6 +196,19 @@
 				<groupId>io.fabric8</groupId>
 				<artifactId>fabric8-maven-plugin</artifactId>
 				<version>${fabric8.maven.plugin.version}</version>
+				<configuration>
+					<resources>
+						<labels>
+							<all>
+								 <group>quickstarts</group>
+								<property>
+									<name>app</name>
+									<value>uaex-fis-1</value>
+								</property>
+							</all>
+						</labels>
+					</resources>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
